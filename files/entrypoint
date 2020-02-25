@@ -86,6 +86,11 @@ if [ -d /etc/sftp.d ]; then
     unset f
 fi
 
+# Modify sshd_config to listen on a specific address
+if [ -z "$LISTEN_IP" ]; then
+    LISTEN_IP='*'
+sed -i -e "s/IP_PLACEHOLDER/$LISTEN_IP/g" /etc/sshd_config
+
 if $startSshd; then
     log "Executing sshd"
     exec /usr/sbin/sshd -D -e
